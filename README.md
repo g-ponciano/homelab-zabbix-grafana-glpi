@@ -57,7 +57,7 @@ Tudo roda em **uma única VM Ubuntu** dentro de um computador com 16 GB de RAM, 
 | Sistema operacional | Ubuntu Server 26.04.1 LTS (`resolute`) |
 | Banco de dados | MariaDB 11.8.6 |
 | Servidor web / PHP | Apache 2 / PHP 8.5.4 |
-| Zabbix | <!-- TODO: confirmar versão: a Fase 3 instalou o 7.4.15, mas o contexto posterior cita 8.0.0 --> |
+| Zabbix | 8.0.0beta2 (pré-lançamento) |
 | Grafana | 13.2.3 |
 | Plugin Zabbix para Grafana | `alexanderzobnin-zabbix-datasource` 6.9.1 |
 | GLPI | 11 (em `/var/www/glpi`) |
@@ -122,6 +122,7 @@ Incidentes que dispararam alerta, com recuperação e chamado fechado:
 
 - **Instabilidade da VM (Problema nº 1):** a VM apresentou *soft lockups* e *RCU stalls*. A causa provável é o VirtualBox 7.2.16 em modo NEM no Windows 11, mas **não foi confirmada**. Durante os travamentos usava-se o kernel `7.0.0-38-generic`; ao iniciar o `7.0.0-34-generic` não surgiram novas mensagens na primeira consulta, e a observação continuou. Decidi não reduzir a segurança do Windows, então o problema segue aberto.
 - **Teste de CPU inconclusivo:** o teste com `stress-ng` deixou a VM sem responder por um tempo, e por isso foi registrado como inconclusivo na Fase 7.
+- **Zabbix em versão beta:** o servidor roda a 8.0.0beta2, instalada pelo repositório `unstable` do Zabbix. É uma versão de pré-lançamento, adequada ao laboratório, mas não a produção.
 
 ---
 
