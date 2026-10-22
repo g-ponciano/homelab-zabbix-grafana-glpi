@@ -10,7 +10,7 @@
 
 ## 📌 Visão Geral do Projeto
 
-Este é o **Projeto 2** do meu portfólio de infraestrutura e suporte de TI, e complementa o [Projeto 1 (Active Directory, DNS, DHCP, GPO e NTFS)](https://github.com/g-ponciano) <!-- TODO: trocar pelo link do repositório do Projeto 1 -->.
+Este é o **Projeto 2** do meu portfólio de infraestrutura e suporte de TI, e complementa o [Projeto 1 (Active Directory, DNS, DHCP, GPO e NTFS)]([https://github.com/g-ponciano](https://github.com/g-ponciano/active-directory-homelab)) <!-- TODO: trocar pelo link do repositório do Projeto 1 -->.
 
 Enquanto o primeiro projeto mostra que sei **montar** uma infraestrutura, este mostra que sei **monitorá-la, identificar problemas e tratá-los em um fluxo de chamados**: o Zabbix detecta, o Grafana mostra, o técnico investiga, o GLPI registra e o incidente é encerrado com documentação.
 
