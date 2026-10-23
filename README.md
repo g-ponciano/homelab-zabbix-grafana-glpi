@@ -69,7 +69,7 @@ Tudo roda em **uma única VM Ubuntu** dentro de um computador com 16 GB de RAM, 
 | Fase | Tema | O que foi feito | Documentação |
 | :---: | :--- | :--- | :--- |
 | **1** | Ubuntu | VM, SSH, atualização, LVM, ferramentas de diagnóstico | [📄 fase-01-ubuntu.md](docs/fase-01-ubuntu.md) |
-| **2** | Banco de dados | MariaDB, bancos `zabbix` e `glpi`, usuários próprios, hardening básico | *a documentar* |
+| **2** | Banco de dados | MariaDB, bancos `zabbix` e `glpi`, usuários próprios, hardening básico | [📄 fase-02-banco-de-dados.md](docs/fase-02-banco-de-dados.md) |
 | **3** | Zabbix | Repositório oficial, Server, Agent 2, frontend, host monitorado (CPU, RAM, disco, rede, serviços), triggers | *a documentar* |
 | **4** | Grafana | Instalação, integração com o Zabbix, dashboard de CPU, RAM, disco e rede | *a documentar* |
 | **5** | GLPI | Apache, PHP, GLPI 11, usuários e perfis, categorias ITIL, ativos, chamados, SLA | *a documentar* |
