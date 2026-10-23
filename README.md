@@ -10,7 +10,7 @@
 
 ## 📌 Visão Geral do Projeto
 
-Este é o **Projeto 2** do meu portfólio de infraestrutura e suporte de TI, e complementa o [Projeto 1 (Active Directory, DNS, DHCP, GPO e NTFS)](https://github.com/g-ponciano) <!-- TODO: trocar pelo link do repositório do Projeto 1 -->.
+Este é o **Projeto 2** do meu portfólio de infraestrutura e suporte de TI, e complementa o [[Projeto 1 (Active Directory, DNS, DHCP, GPO e NTFS)](https://github.com/g-ponciano](https://github.com/g-ponciano/active-directory-homelab))
 
 Enquanto o primeiro projeto mostra que sei **montar** uma infraestrutura, este mostra que sei **monitorá-la, identificar problemas e tratá-los em um fluxo de chamados**: o Zabbix detecta, o Grafana mostra, o técnico investiga, o GLPI registra e o incidente é encerrado com documentação.
 
@@ -57,7 +57,7 @@ Tudo roda em **uma única VM Ubuntu** dentro de um computador com 16 GB de RAM, 
 | Sistema operacional | Ubuntu Server 26.04.1 LTS (`resolute`) |
 | Banco de dados | MariaDB 11.8.6 |
 | Servidor web / PHP | Apache 2 / PHP 8.5.4 |
-| Zabbix | <!-- TODO: confirmar versão: a Fase 3 instalou o 7.4.15, mas o contexto posterior cita 8.0.0 --> |
+| Zabbix | 8.0.0beta2 (pré-lançamento) |
 | Grafana | 13.2.3 |
 | Plugin Zabbix para Grafana | `alexanderzobnin-zabbix-datasource` 6.9.1 |
 | GLPI | 11 (em `/var/www/glpi`) |
