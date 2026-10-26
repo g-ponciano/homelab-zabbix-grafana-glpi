@@ -179,23 +179,7 @@ Resultado obtido: `bind_address = 127.0.0.1` e `LISTEN 127.0.0.1:3306` no `ss`, 
 
 ## ⚠️ Problemas encontrados
 
-### 1. Comandos repetidos e erros inofensivos
-
-Os comandos de criação foram executados duas vezes seguidas, a segunda dentro de um bloco único com os dois bancos. A segunda rodada retornou:
-
-```text
-ERROR 1007 (HY000): Can't create database 'zabbix'; database exists
-ERROR 1396 (HY000): Operation CREATE USER failed for 'zabbix'@'localhost'
-```
-
-Não houve dano: o banco e o usuário já existiam, e o `GRANT` e o `FLUSH PRIVILEGES` são repetíveis. O aprendizado é escrever esses scripts de forma que possam rodar mais de uma vez:
-
-```sql
-CREATE DATABASE IF NOT EXISTS zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
-CREATE USER IF NOT EXISTS 'zabbix'@'localhost' IDENTIFIED BY '<SENHA_FORTE_1>';
-```
-
-### 2. MariaDB não iniciou após definir o fuso horário padrão
+### 1. MariaDB não iniciou após definir o fuso horário padrão
 
 Ao tentar fixar o fuso do servidor no arquivo `/etc/mysql/mariadb.conf.d/50-server.cnf`, com `default-time-zone = 'America/Sao_Paulo'`, o serviço deixou de subir. O `journalctl -xeu mariadb` mostrou:
 
@@ -208,18 +192,6 @@ mariadb.service: Main process exited, code=exited, status=1/FAILURE
 O MariaDB só aceita um fuso por nome depois que as tabelas de fuso horário estão carregadas (Etapa 6). Com o arquivo corrigido e o serviço reiniciado, o banco voltou a funcionar. Além disso, o `systemctl` avisou `The unit file ... changed on disk`, resolvido com `sudo systemctl daemon-reload`.
 
 > **Lição:** uma linha inválida em um arquivo de configuração impede o serviço de iniciar. Depois de editar, sempre rode `systemctl restart` e confira o `status` ou o `journalctl` antes de seguir.
-
-### 3. Boas práticas de senha
-
-Na primeira passada, a mesma senha foi usada para os dois usuários de banco. O correto é **uma senha diferente para cada usuário**, e nunca registrar senhas em capturas ou em arquivos versionados. Para trocar sem recriar nada:
-
-```sql
-ALTER USER 'zabbix'@'localhost' IDENTIFIED BY '<NOVA_SENHA_1>';
-ALTER USER 'glpi'@'localhost'   IDENTIFIED BY '<NOVA_SENHA_2>';
-FLUSH PRIVILEGES;
-```
-
-Depois da troca, é preciso atualizar a senha onde cada aplicação a guarda: `DBPassword` em `/etc/zabbix/zabbix_server.conf` (Zabbix) e a configuração do banco do GLPI.
 
 ---
 
@@ -240,6 +212,5 @@ Depois da troca, é preciso atualizar a senha onde cada aplicação a guarda: `D
 - Princípio do menor privilégio na prática
 - Hardening básico e redução da superfície de ataque
 - Escolha correta de charset e collation conforme a documentação de cada produto
-- Postura de segurança com credenciais
 
 **Próxima fase:** Fase 3 — Zabbix.
