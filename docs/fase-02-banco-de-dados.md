@@ -173,7 +173,7 @@ sudo ss -lntp | grep 3306
 | `127.0.0.1:3306` | Seguro: só a própria VM acessa o banco |
 | `0.0.0.0:3306` | Exposto: o banco escuta toda a rede |
 
-<!-- TODO: se tiver captura de SHOW DATABASES, SHOW GRANTS e do ss -lntp | grep 3306, adicionar aqui. -->
+Resultado obtido: `bind_address = 127.0.0.1` e `LISTEN 127.0.0.1:3306` no `ss`, ou seja, **o banco escuta apenas localmente**. O `SHOW DATABASES` listou `glpi`, `zabbix` e os bancos do sistema (`information_schema`, `mysql`, `performance_schema`, `sys`).
 
 ---
 
@@ -195,7 +195,21 @@ CREATE DATABASE IF NOT EXISTS zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
 CREATE USER IF NOT EXISTS 'zabbix'@'localhost' IDENTIFIED BY '<SENHA_FORTE_1>';
 ```
 
-### 2. Boas práticas de senha
+### 2. MariaDB não iniciou após definir o fuso horário padrão
+
+Ao tentar fixar o fuso do servidor no arquivo `/etc/mysql/mariadb.conf.d/50-server.cnf`, com `default-time-zone = 'America/Sao_Paulo'`, o serviço deixou de subir. O `journalctl -xeu mariadb` mostrou:
+
+```text
+[ERROR] Fatal error: Illegal or unknown default time zone 'America/Sao_Paulo'
+[ERROR] Aborting
+mariadb.service: Main process exited, code=exited, status=1/FAILURE
+```
+
+O MariaDB só aceita um fuso por nome depois que as tabelas de fuso horário estão carregadas (Etapa 6). Com o arquivo corrigido e o serviço reiniciado, o banco voltou a funcionar. Além disso, o `systemctl` avisou `The unit file ... changed on disk`, resolvido com `sudo systemctl daemon-reload`.
+
+> **Lição:** uma linha inválida em um arquivo de configuração impede o serviço de iniciar. Depois de editar, sempre rode `systemctl restart` e confira o `status` ou o `journalctl` antes de seguir.
+
+### 3. Boas práticas de senha
 
 Na primeira passada, a mesma senha foi usada para os dois usuários de banco. O correto é **uma senha diferente para cada usuário**, e nunca registrar senhas em capturas ou em arquivos versionados. Para trocar sem recriar nada:
 
@@ -217,7 +231,7 @@ Depois da troca, é preciso atualizar a senha onde cada aplicação a guarda: `D
 - [x] Banco `glpi` (`utf8mb4_unicode_ci`) e usuário próprio
 - [x] Acesso dos dois usuários testado
 - [x] Tabelas de fuso horário carregadas para o GLPI
-- [ ] Porta 3306 restrita a `127.0.0.1` (confirmar com `ss -lntp`)
+- [x] Porta 3306 restrita a `127.0.0.1` (confirmado com `ss -lntp`)
 
 ## 🎓 O que esta fase demonstra
 
