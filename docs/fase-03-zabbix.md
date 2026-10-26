@@ -69,7 +69,7 @@ Instalação dos componentes:
 sudo apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent2
 ```
 
-A saída mostrou **`Upgrading: 5`**, ou seja, uma atualização dos cinco pacotes, e não uma instalação nova.
+A saída mostrou **`Upgrading: 5`**, ou seja, uma atualização dos cinco pacotes, e não uma instalação nova. Como o arquivo `zabbix_server.conf` já tinha sido alterado, o `dpkg` abriu o aviso *"Configuration file ... Modified (by you or by a script) since installation"*, e a opção escolhida (`Y`) substituiu o arquivo pela versão do pacote.
 
 ![apt upgrade para 8.0.0~beta2](../images/f3-03-apt-upgrade-8.0-beta2.png)
 
@@ -202,7 +202,11 @@ Itens equivalentes foram criados para o MariaDB e o Zabbix Server.
 | :--- | :---: | :--- |
 | `Apache está inativo` | High | `last(/SRV-MONITORAMENTO/systemd.unit.info[apache2.service])<>"active"` |
 | `MariaDB está inativo` | High | `last(/SRV-MONITORAMENTO/systemd.unit.info[mariadb.service])<>"active"` |
-| `Uso elevado de CPU (> 70%)` | Warning | `avg(/SRV-MONITORAMENTO/system.cpu.util,1m)>70` |
+| `Uso elevado de CPU (> 70%)` | Average | `avg(/SRV-MONITORAMENTO/system.cpu.util,1m)>70` |
+
+![Triggers criadas no host](../images/f3-08-triggers-customizadas.png)
+
+O host tem **102 triggers** habilitadas: as 3 acima são as criadas manualmente; as demais vêm dos templates (sistemas de arquivos `/` e `/boot`, interface `enp0s3`, memória, swap, carga, serviços systemd).
 
 ### Teste de falha: parar o Apache
 
@@ -226,24 +230,13 @@ Ao parar o MariaDB, o **próprio Zabbix Server encerrou**, por perder o banco, e
 
 | # | Problema | Causa | Solução |
 | :-: | :--- | :--- | :--- |
-| 1 | `zabbix-server` em loop de reinício (`status=1/FAILURE`) no 7.4 | `DBPassword` não configurado | Preencher `DBPassword` em `zabbix_server.conf` |
+| 1 | `zabbix-server` em loop de reinício (`status=1/FAILURE`) no 7.4 | `DBPassword` ausente ou incorreto em `zabbix_server.conf` (o resumo da conversa registra esse arquivo como "corrigido (DBPassword)") | Ajustar `DBPassword` para a senha do usuário `zabbix` e reiniciar o serviço |
 | 2 | Interface com erro sobre versão do banco após ir para o 8.0 | Banco ainda no esquema do 7.4; o servidor 8.0 migra ao iniciar | Fazer o servidor 8.0 iniciar |
-| 3 | `[1045] Access denied for user 'zabbix'@'localhost'` | Senha do arquivo diferente da do usuário no MariaDB | Redefinir a senha do usuário no banco e alinhar `zabbix_server.conf` |
+| 3 | `[1045] Access denied for user 'zabbix'@'localhost'` | Durante o `apt install`, o `dpkg` perguntou o que fazer com o `/etc/zabbix/zabbix_server.conf` modificado; a opção `Y` instalou o arquivo do pacote e o `DBPassword` configurado antes foi perdido | Redefinir a senha do usuário no banco e alinhar o `DBPassword` em `zabbix_server.conf` |
 | 4 | Frontend ainda sem acesso ao banco | O frontend tem arquivo próprio de configuração | Editar **`/etc/zabbix/web/zabbix.conf.php`** (o caminho `/etc/zabbix/zabbix.conf.php` abre arquivo vazio) |
 | 5 | Login `Admin` recusado | O 8.0 exige hash **bcrypt**; o hash antigo (MD5) não vale | Gerar o hash bcrypt com PHP e atualizar a tabela `users` por um script PDO |
 | 6 | `Incorrect value for 'contents_width' field` no dashboard | Bug de validação conhecido da versão beta | `Ctrl+F5` e recriar o dashboard |
 | 7 | VM travou no `stress-ng` com 4 núcleos | Saturação das 4 vCPUs compartilhadas | Teste limitado a 2 núcleos, 70%, 45 s |
-| 8 | `sudo pkill -9 stress-ng` sem efeito | Comando digitado no PowerShell do Windows, e não dentro da VM | Executar dentro da sessão SSH da VM |
-| 9 | Latest data mostrava só 43 itens | Templates do SO não associados ao host | Associar `Linux by Zabbix agent active` e `Systemd by Zabbix agent 2` |
-| 10 | Template Systemd rejeitou o host | Faltava interface do tipo Agent | Adicionar Agent `127.0.0.1:10050` |
-
-### 🔐 Pendências de segurança
-
-Durante os testes foram usadas **senhas simples de laboratório**: o usuário `zabbix` do banco recebeu uma senha curta para destravar a autenticação (problema 3), e o `Admin` do frontend foi redefinido para o valor padrão (problema 5). Antes de publicar ou de expor a VM:
-
-1. Trocar a senha do `Admin` em **User settings → Change password**.
-2. Trocar a senha do usuário `zabbix` no MariaDB e atualizar `DBPassword` e `zabbix.conf.php`.
-3. Não registrar essas senhas em capturas ou arquivos versionados.
 
 ---
 
@@ -258,7 +251,6 @@ Durante os testes foram usadas **senhas simples de laboratório**: o usuário `z
 - [x] CPU, memória, disco, rede e serviços validados
 - [x] Triggers de Apache, MariaDB e CPU criadas
 - [x] Falha do Apache simulada: alerta e recuperação confirmados
-- [ ] Trocar as senhas de laboratório
 
 ## 🎓 O que esta fase demonstra
 
