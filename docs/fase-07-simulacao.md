@@ -254,6 +254,11 @@ No período de 21/10 19:45 a 21:55, o dashboard mostra:
 
 ![Dashboard final com 7 painéis](../images/f7-25-grafana-dashboard-final.png)
 
+Recortes do mesmo dashboard, no período de 21/10 19:45 a 21:55, mostrando de perto os painéis de CPU, memória, disco e uptime, e o painel de problemas ativos:
+
+![Recorte: CPU, memória, disco e uptime](../images/f7-26-grafana-recorte-4-paineis.png)
+![Recorte: Active Problems](../images/f7-27-grafana-recorte-active-problems.png)
+
 ---
 
 ## Fechamento no GLPI
