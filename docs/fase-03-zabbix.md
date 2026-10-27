@@ -44,6 +44,10 @@ O plano era instalar o **Zabbix 7.4**. O que aconteceu foi diferente, e vale reg
 | 30/09 | Servidor 8.0 migrou o banco, houve erro de senha e de login, tudo corrigido; Global view abriu |
 | 01/10 a 07/10 | Host, métricas, testes e triggers |
 
+Em 29/09, ainda no 7.4, o `systemctl status` mostrava o `zabbix-server` em `activating (auto-restart)` com `status=1/FAILURE`, enquanto o `zabbix-agent2` (7.4.15) estava ativo, ainda com o `hostname: [Zabbix server]` padrão:
+
+![zabbix-server em falha no 7.4](../images/f3-01-zabbix-server-falha-7.4.png)
+
 O 8.0 ainda não tinha versão final para Ubuntu 26.04, então o único pacote disponível no repositório `8.0` era o beta do ramo `unstable`. Por isso a versão instalada é pré-lançamento.
 
 ---

@@ -79,6 +79,8 @@ sudo chown -R www-data:www-data /var/www/glpi/config /var/www/glpi/files
 
 ![Download do GLPI](../images/f5-03-download-glpi.png)
 
+![chown de config e files](../images/f5-05-marketplace-chown.png)
+
 O código fica com `root` (somente leitura para o servidor web); só `config` e `files`, onde o GLPI escreve, pertencem ao `www-data`.
 
 ## Etapa 3 — Apache
@@ -110,7 +112,9 @@ O aviso `AH00558` sobre `ServerName` aparece no `configtest` e não afeta o func
 
 ## Etapa 4 — Assistente de instalação
 
-Acesso em `http://192.168.100.86/glpi/install/install.php`: escolha do idioma, aceite da licença e verificação de compatibilidade. Os itens obrigatórios passaram; o único aviso restante era o diretório do marketplace (ver Problemas, item 3).
+Acesso em `http://192.168.100.86/glpi/install/install.php`: escolha do idioma, aceite da licença e verificação de compatibilidade. Os itens obrigatórios passaram; o único aviso restante era o diretório do marketplace (ver Problemas, item 3). A conferência das permissões mostrou `config` e `files` com `www-data` e `marketplace` ainda com `root`:
+
+![Dono do diretório marketplace](../images/f5-04-marketplace-permissao.png)
 
 ![Verificação de requisitos](../images/f5-06-requisitos-instalador.png)
 
