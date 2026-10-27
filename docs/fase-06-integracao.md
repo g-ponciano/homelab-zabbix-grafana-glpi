@@ -151,7 +151,7 @@ journalctl -k --since "2026-10-19 23:26:00" --no-pager | grep -iE "soft lockup|r
 ![Soft lockups do boot de 19/10](../images/f6-11-soft-lockups-19-10.png)
 ![RCU stall no console da VM](../images/f6-12-console-vm-rcu.png)
 
-Registrados às 23:08, 23:21, 23:26, 23:43 (relógio parado por 165 s), 23:51 e 23:52 UTC (72 s em três vCPUs ao mesmo tempo). O log do VirtualBox registrou que o convidado ficou sem responder **nos mesmos horários**, com durações compatíveis, e o relógio do Ubuntu não ficou defasado.
+Registrados às 23:08 (32 s) e 23:21 (RCU stall) em uma consulta anterior ao journal, sem captura, e, na consulta da imagem acima (a partir de 23:26), às 23:26 (58 s), 23:43 (RCU stall, relógio parado por 165 s), 23:51 (32 s) e 23:52 UTC (72 s em três vCPUs ao mesmo tempo). O log do VirtualBox registrou que o convidado ficou sem responder **nos mesmos horários**, com durações compatíveis, e o relógio do Ubuntu não ficou defasado.
 
 Guest Additions: o log do VirtualBox mostrava versão **6.0.0** contra o host 7.2.16. Conferindo dentro da VM:
 
