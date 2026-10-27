@@ -21,7 +21,7 @@ Tudo roda em **uma única VM Ubuntu** dentro de um computador com 16 GB de RAM, 
 ## 📐 Arquitetura
 
 ```text
-                SEU PC (16 GB RAM) — Oracle VirtualBox
+                PC HOST (16 GB RAM) — Oracle VirtualBox
                                 │
                   ┌─────────────┴──────────────┐
                   │   SRV-MONITORAMENTO        │
@@ -59,7 +59,7 @@ Tudo roda em **uma única VM Ubuntu** dentro de um computador com 16 GB de RAM, 
 | Servidor web / PHP | Apache 2 / PHP 8.5.4 |
 | Zabbix | 8.0.0beta2 (pré-lançamento) |
 | Grafana | 13.2.3 |
-| Plugin Zabbix para Grafana | `alexanderzobnin-zabbix-datasource` 6.9.1 |
+| Plugin Zabbix para Grafana | `alexanderzobnin-zabbix-app` 6.3.1 |
 | GLPI | 11 (em `/var/www/glpi`) |
 
 ---
@@ -71,7 +71,7 @@ Tudo roda em **uma única VM Ubuntu** dentro de um computador com 16 GB de RAM, 
 | **1** | Ubuntu | VM, SSH, atualização, LVM, ferramentas de diagnóstico | [📄 fase-01-ubuntu.md](docs/fase-01-ubuntu.md) |
 | **2** | Banco de dados | MariaDB, bancos `zabbix` e `glpi`, usuários próprios, hardening básico | [📄 fase-02-banco-de-dados.md](docs/fase-02-banco-de-dados.md) |
 | **3** | Zabbix | Repositório oficial, Server, Agent 2, frontend, host monitorado (CPU, RAM, disco, rede, serviços), triggers | [📄 fase-03-zabbix.md](docs/fase-03-zabbix.md) |
-| **4** | Grafana | Instalação, integração com o Zabbix, dashboard de CPU, RAM, disco e rede | [📄 fase-04-grafana.md](docs/fase-04-grafana.md) |
+| **4** | Grafana | Instalação, integração com o Zabbix, métricas validadas no Explore e dashboard de CPU, RAM, disco, uptime e problemas ativos | [📄 fase-04-grafana.md](docs/fase-04-grafana.md) |
 | **5** | GLPI | Apache, PHP, GLPI 11, usuários e perfis, categorias ITIL, ativos, chamados, SLA | [📄 fase-05-glpi.md](docs/fase-05-glpi.md) |
 | **6** | Integração | Alerta no Zabbix, investigação, correlação no Grafana e registro do incidente no GLPI (chamado nº 2 e Problema nº 1) | [📄 fase-06-integracao.md](docs/fase-06-integracao.md) |
 | **7** | Simulação profissional | Incidentes provocados (CPU, serviço, disco, conectividade), alerta, investigação, solução e chamado | [📄 fase-07-simulacao.md](docs/fase-07-simulacao.md) |
@@ -95,7 +95,8 @@ Tudo roda em **uma única VM Ubuntu** dentro de um computador com 16 GB de RAM, 
 
 ### Fase 4 — Grafana
 - Plugin do Zabbix configurado como fonte de dados e consultas validadas no Explore.
-- Dashboard com painéis de CPU, memória, disco e tráfego de rede (`enp0s3`).
+- Métricas de CPU, memória, disco e rede (`enp0s3`) validadas no Explore.
+- Dashboard com painéis de CPU, memória, disco, uptime e problemas ativos; testes de carga e de falha do Apache.
 
 ### Fase 5 — GLPI 11 (Central de Suporte)
 - Perfis **Self-Service** (Maria Solicitante) e **Technician** (TI Técnico).
