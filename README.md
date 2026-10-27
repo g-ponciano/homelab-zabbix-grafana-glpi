@@ -10,7 +10,7 @@
 
 ## 📌 Visão Geral do Projeto
 
-Este é o **Projeto 2** do meu portfólio de infraestrutura e suporte de TI, e complementa o [Projeto 1 (Active Directory, DNS, DHCP, GPO e NTFS)](https://github.com/g-ponciano](https://github.com/g-ponciano/active-directory-homelab))
+Este é o **Projeto 2** do meu portfólio de infraestrutura e suporte de TI, e complementa o [Projeto 1 (Active Directory, DNS, DHCP, GPO e NTFS)](https://github.com/g-ponciano/active-directory-homelab)
 
 Enquanto o primeiro projeto mostra que sei **montar** uma infraestrutura, este mostra que sei **monitorá-la, identificar problemas e tratá-los em um fluxo de chamados**: o Zabbix detecta, o Grafana mostra, o técnico investiga, o GLPI registra e o incidente é encerrado com documentação.
 
@@ -73,8 +73,8 @@ Tudo roda em **uma única VM Ubuntu** dentro de um computador com 16 GB de RAM, 
 | **3** | Zabbix | Repositório oficial, Server, Agent 2, frontend, host monitorado (CPU, RAM, disco, rede, serviços), triggers | [📄 fase-03-zabbix.md](docs/fase-03-zabbix.md) |
 | **4** | Grafana | Instalação, integração com o Zabbix, dashboard de CPU, RAM, disco e rede | [📄 fase-04-grafana.md](docs/fase-04-grafana.md) |
 | **5** | GLPI | Apache, PHP, GLPI 11, usuários e perfis, categorias ITIL, ativos, chamados, SLA | [📄 fase-05-glpi.md](docs/fase-05-glpi.md) |
-| **6** | Integração | Alerta no Zabbix, investigação e registro do incidente no GLPI | *a documentar* |
-| **7** | Simulação profissional | Incidentes provocados, alerta, investigação, solução e chamado | [📄 fase-07-simulacao.md](docs/fase-07-simulacao.md) |
+| **6** | Integração | Alerta no Zabbix, investigação, correlação no Grafana e registro do incidente no GLPI (chamado nº 2 e Problema nº 1) | [📄 fase-06-integracao.md](docs/fase-06-integracao.md) |
+| **7** | Simulação profissional | Incidentes provocados (CPU, serviço, disco, conectividade), alerta, investigação, solução e chamado | [📄 fase-07-simulacao.md](docs/fase-07-simulacao.md) |
 
 ---
 
@@ -105,7 +105,8 @@ Tudo roda em **uma única VM Ubuntu** dentro de um computador com 16 GB de RAM, 
 - Chamado nº 1 conduzido por todo o ciclo, da abertura ao status **Fechado**.
 
 ### Fase 6 — Integração
-- Alerta detectado no Zabbix, investigado e registrado como chamado nº 2 no GLPI.
+- Alerta detectado no Zabbix, investigado com `journalctl` e correlacionado no Grafana.
+- Registro como chamado nº 2 e Problema nº 1 no GLPI, com a decisão documentada (causa provável, não confirmada).
 
 ### Fase 7 — Simulação profissional
 Incidentes que dispararam alerta, com recuperação e chamado fechado:
@@ -115,13 +116,14 @@ Incidentes que dispararam alerta, com recuperação e chamado fechado:
 | Serviço `cron` parado | 19:59:03 | 20:15:03 | nº 3 |
 | Disco a 86% | 20:37:42 | 20:57:42 | nº 4 |
 | Sem conectividade externa | 21:28:28 | 21:43:28 | nº 5 |
+| Uso de CPU alto (teste de carga) | não disparou | — | sem chamado (inconclusivo) |
 
 ---
 
 ## ⚠️ Limitações e Problemas Conhecidos
 
 - **Instabilidade da VM (Problema nº 1):** a VM apresentou *soft lockups* e *RCU stalls*. A causa provável é o VirtualBox 7.2.16 em modo NEM no Windows 11, mas **não foi confirmada**. Durante os travamentos usava-se o kernel `7.0.0-38-generic`; ao iniciar o `7.0.0-34-generic` não surgiram novas mensagens na primeira consulta, e a observação continuou. Decidi não reduzir a segurança do Windows, então o problema segue aberto.
-- **Teste de CPU inconclusivo:** o teste com `stress-ng` deixou a VM sem responder por um tempo, e por isso foi registrado como inconclusivo na Fase 7.
+- **Teste de CPU inconclusivo:** o teste de carga (4 laços por 4 minutos) deixou a VM sem responder por até 327 s e o alerta de CPU não disparou; por isso foi registrado como inconclusivo na Fase 7.
 
 ---
 
