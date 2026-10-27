@@ -230,7 +230,7 @@ Ao parar o MariaDB, o **próprio Zabbix Server encerrou**, por perder o banco, e
 
 | # | Problema | Causa | Solução |
 | :-: | :--- | :--- | :--- |
-| 1 | `zabbix-server` em loop de reinício (`status=1/FAILURE`) no 7.4 | `DBPassword` ausente ou incorreto em `zabbix_server.conf` (o resumo da conversa registra esse arquivo como "corrigido (DBPassword)") | Ajustar `DBPassword` para a senha do usuário `zabbix` e reiniciar o serviço |
+| 1 | `zabbix-server` em loop de reinício (`status=1/FAILURE`) no 7.4 | `DBPassword` ausente ou incorreto em `zabbix_server.conf` | Ajustar `DBPassword` para a senha do usuário `zabbix` e reiniciar o serviço |
 | 2 | Interface com erro sobre versão do banco após ir para o 8.0 | Banco ainda no esquema do 7.4; o servidor 8.0 migra ao iniciar | Fazer o servidor 8.0 iniciar |
 | 3 | `[1045] Access denied for user 'zabbix'@'localhost'` | Durante o `apt install`, o `dpkg` perguntou o que fazer com o `/etc/zabbix/zabbix_server.conf` modificado; a opção `Y` instalou o arquivo do pacote e o `DBPassword` configurado antes foi perdido | Redefinir a senha do usuário no banco e alinhar o `DBPassword` em `zabbix_server.conf` |
 | 4 | Frontend ainda sem acesso ao banco | O frontend tem arquivo próprio de configuração | Editar **`/etc/zabbix/web/zabbix.conf.php`** (o caminho `/etc/zabbix/zabbix.conf.php` abre arquivo vazio) |

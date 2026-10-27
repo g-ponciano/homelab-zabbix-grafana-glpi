@@ -189,8 +189,6 @@ sudo ss -tulpn
 
 O `ss -tulpn` volta a ser usado nas fases seguintes para conferir as portas dos serviços: Zabbix Server (10051), Grafana (3000), Apache/GLPI (80) e SSH (22).
 
-<!-- TODO: se tiver captura de systemctl --failed / systemctl status ssh / ss -tulpn, adicionar aqui. -->
-
 ---
 
 ## ✅ Checklist da Fase 1
