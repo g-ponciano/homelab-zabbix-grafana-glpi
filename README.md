@@ -71,8 +71,8 @@ Tudo roda em **uma única VM Ubuntu** dentro de um computador com 16 GB de RAM, 
 | **1** | Ubuntu | VM, SSH, atualização, LVM, ferramentas de diagnóstico | [📄 fase-01-ubuntu.md](docs/fase-01-ubuntu.md) |
 | **2** | Banco de dados | MariaDB, bancos `zabbix` e `glpi`, usuários próprios, hardening básico | [📄 fase-02-banco-de-dados.md](docs/fase-02-banco-de-dados.md) |
 | **3** | Zabbix | Repositório oficial, Server, Agent 2, frontend, host monitorado (CPU, RAM, disco, rede, serviços), triggers | [📄 fase-03-zabbix.md](docs/fase-03-zabbix.md) |
-| **4** | Grafana | Instalação, integração com o Zabbix, dashboard de CPU, RAM, disco e rede | *a documentar* |
-| **5** | GLPI | Apache, PHP, GLPI 11, usuários e perfis, categorias ITIL, ativos, chamados, SLA | *a documentar* |
+| **4** | Grafana | Instalação, integração com o Zabbix, dashboard de CPU, RAM, disco e rede | [📄 fase-04-grafana.md](docs/fase-04-grafana.md) |
+| **5** | GLPI | Apache, PHP, GLPI 11, usuários e perfis, categorias ITIL, ativos, chamados, SLA | [📄 fase-05-glpi.md](docs/fase-05-glpi.md) |
 | **6** | Integração | Alerta no Zabbix, investigação e registro do incidente no GLPI | *a documentar* |
 | **7** | Simulação profissional | Incidentes provocados, alerta, investigação, solução e chamado | [📄 fase-07-simulacao.md](docs/fase-07-simulacao.md) |
 
