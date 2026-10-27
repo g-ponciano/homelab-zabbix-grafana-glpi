@@ -173,11 +173,9 @@ Em todos, a consulta retornou o gráfico e a tabela com valores reais coletados 
 
 O dashboard ficou com atualização automática de **1 minuto**.
 
-![Painéis de CPU, memória, disco e uptime](../images/f4-06-dashboard-4-paineis.png)
+![Dashboard com os cinco painéis](../images/f4-06-dashboard-5-paineis.png)
 
-> Esta captura é de 21/10. O salto do `Disk Usage` e o pico de CPU em torno de 20:40 pertencem aos incidentes da Fase 7, e os painéis `Cron Service State` e `External Connectivity`, também criados na Fase 7, ficaram de fora do recorte.
-
-![Painel Active Problems](../images/f4-07-painel-active-problems.png)
+> Captura de 12/10 (21:06), com período *Last 6 hours*. O uptime de `00:01:01` indica que a VM tinha acabado de reiniciar. Depois, a Fase 7 acrescentou ao mesmo dashboard os painéis `Cron Service State` e `External Connectivity`.
 
 O painel `Active Problems` mostra `Count A = 0` quando não há problema ativo. O zero é um resultado válido: a consulta funcionou e nada estava em alerta.
 
@@ -199,7 +197,11 @@ stress-ng --cpu 4 --timeout 120s
 
 O `stress-ng` terminou com `successful run completed in 2 mins 4.71 secs`, com os quatro estressores aprovados. Durante a execução a VM pareceu travada; depois de alguns instantes voltou a responder. De início o gráfico `CPU Utilization` não mostrava o pico. O período foi reduzido para **Last 1 hour**, o gráfico `CPU utilization` foi conferido no Zabbix (**Monitoring → Latest data → Graph**) e, em seguida, o pico apareceu também no Grafana.
 
-> Observação: este teste usou todos os núcleos da VM de novo, e a VM hospeda o próprio Zabbix, o Grafana e o banco. O resultado foi o mesmo da Fase 3: teste de carga nessa VM precisa de limite de núcleos e de tempo. Não há captura do pico no painel do Grafana, apenas o relato de que ele apareceu.
+![Pico de CPU no painel do Grafana](../images/f4-07-cpu-pico-grafana.png)
+
+O painel mostra a utilização subindo de ~4% para **~13%** por volta de 21:02 e **~10%** às 21:06, voltando a ~3% logo depois. O pico é baixo porque o Zabbix coleta a cada minuto e a VM estava sobrecarregada (o uptime de `00:01:01` na captura do dashboard indica que ela reiniciou em seguida).
+
+> Observação: este teste usou todos os núcleos da VM de novo, e a VM hospeda o próprio Zabbix, o Grafana e o banco. O resultado foi o mesmo da Fase 3: teste de carga nessa VM precisa de limite de núcleos e de tempo.
 
 ## Etapa 9 — Teste de falha: parar o Apache
 
@@ -221,6 +223,14 @@ Com o Apache parado, a interface do Zabbix ficou fora do ar (ela é servida pelo
 E a trigger `Apache está inativo` passou de `OK` para **`PROBLEM`**:
 
 ![Trigger Apache em PROBLEM](../images/f4-11-trigger-apache-problem.png)
+
+Depois de religar o serviço (`sudo systemctl start apache2`), o `systemctl is-active apache2` voltou `active`:
+
+![Apache ativo de novo](../images/f4-13-apache-ativo.png)
+
+Em **Monitoring → Problems** ficou o ciclo completo, com os horários da VM: `Apache está inativo` (High) às 09:33:20 PM, **resolvido** às 09:34:50 PM (duração 1m30s), e `Systemd: apache2.service: Service is not running` (Warning) resolvido às 09:35:18 PM. O reinício do serviço também gerou o aviso informativo `apache2.service has been restarted (uptime < 10m)`.
+
+![Problems: Apache detectado e resolvido](../images/f4-12-problems-apache-resolvido.png)
 
 ---
 
@@ -248,8 +258,8 @@ E a trigger `Apache está inativo` passou de `OK` para **`PROBLEM`**:
 - [x] Dashboard `Homelab - Monitoramento de Infraestrutura` criado
 - [x] Painéis de CPU, memória, disco, uptime e problemas ativos
 - [x] Atualização automática de 1 minuto
-- [x] Falha do Apache detectada pela trigger (`PROBLEM`)
-- [ ] Captura do pico de CPU no painel do Grafana
+- [x] Falha do Apache detectada pela trigger (`PROBLEM`) e resolvida após a recuperação
+- [x] Pico de CPU visível no painel do Grafana
 
 ## 🎓 O que esta fase demonstra
 
