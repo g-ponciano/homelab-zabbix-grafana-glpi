@@ -213,4 +213,4 @@ O MariaDB só aceita um fuso por nome depois que as tabelas de fuso horário est
 - Hardening básico e redução da superfície de ataque
 - Escolha correta de charset e collation conforme a documentação de cada produto
 
-**Próxima fase:** Fase 3 — Zabbix.
+**Próxima fase:** [Fase 3 — Zabbix](fase-03-zabbix.md)

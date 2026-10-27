@@ -265,4 +265,4 @@ Ao parar o MariaDB, o **próprio Zabbix Server encerrou**, por perder o banco, e
 - Testes de falha controlados e leitura de alertas e recuperação
 - Consciência dos limites do próprio desenho (banco e monitor na mesma VM)
 
-**Próxima fase:** Fase 4 — Grafana.
+**Próxima fase:** [Fase 4 — Grafana](fase-04-grafana.md)

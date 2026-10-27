@@ -215,4 +215,4 @@ Em 21/10 foi acrescentada uma nota ao Problema #1 e ao chamado #2, confirmando o
 - Correlação entre ferramentas e fusos horários diferentes (UTC no servidor e no GLPI, BRT no Grafana e no Zabbix).
 - Honestidade técnica: o que foi confirmado, o que é apenas provável e uma correção do próprio registro quando uma evidência nova contradisse o primeiro acompanhamento.
 
-**Próxima fase:** Fase 7 — simulação profissional: incidentes provocados de propósito (CPU alta, serviço parado, disco e conectividade), com alerta no Zabbix, evidência no Grafana e chamado no GLPI.
+**Próxima fase:** [Fase 7 — simulação profissional](fase-07-simulacao.md): incidentes provocados de propósito (CPU alta, serviço parado, disco e conectividade), com alerta no Zabbix, evidência no Grafana e chamado no GLPI.

@@ -301,3 +301,5 @@ Ao fim da fase, a lista de chamados tinha 5 itens: **#1, #3, #4 e #5 fechados** 
 - Diagnóstico por eliminação (conectividade: interface, rota, ICMP e outro destino na mesma porta, até isolar a regra de firewall).
 - Separação entre causa do cenário e ruído do ambiente: as paradas da VM foram registradas, mas não atribuídas aos incidentes simulados.
 - Honestidade técnica: um teste que não provou nada ficou como inconclusivo, sem ser contado como sucesso.
+
+**Fim do projeto:** voltar ao [README](../README.md).

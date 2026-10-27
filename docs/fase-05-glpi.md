@@ -242,4 +242,4 @@ Criado o nível de serviço **Central de Suporte - Homelab**, com calendário 24
 - Hardening básico pós-instalação: senhas padrão, instalador bloqueado e permissões mínimas.
 - Operação de um service desk: perfis, categorias, inventário, SLA e ciclo completo de um chamado.
 
-**Próxima fase:** Fase 6 — Integração entre Zabbix, Grafana e GLPI.
+**Próxima fase:** [Fase 6 — Integração entre Zabbix, Grafana e GLPI](fase-06-integracao.md)

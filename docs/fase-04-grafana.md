@@ -270,4 +270,4 @@ Em **Monitoring → Problems** ficou o ciclo completo, com os horários da VM: `
 - Leitura crítica de dados (zero é resultado válido; Trends podem esconder picos curtos)
 - Testes de carga e de falha com leitura nos dois sistemas
 
-**Próxima fase:** Fase 5 — GLPI.
+**Próxima fase:** [Fase 5 — GLPI](fase-05-glpi.md)
