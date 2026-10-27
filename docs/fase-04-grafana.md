@@ -5,7 +5,7 @@
 | Item | Valor |
 | :--- | :--- |
 | Grafana OSS | **13.2.3** (repositório APT oficial) |
-| Plugin | Zabbix (`alexanderzobnin-zabbix-app`): **6.9.1** instalado; **6.3.1** durante o diagnóstico (ver Problemas, item 2) |
+| Plugin | Zabbix (`alexanderzobnin-zabbix-app`) **6.3.1** (instalado primeiro na 6.9.1; ver Problemas, item 2) |
 | Fonte de dados | `alexanderzobnin-zabbix-datasource` (API do Zabbix) |
 | Acesso | `http://192.168.100.86:3000` |
 | Zabbix | 8.0.0beta2, API em `http://192.168.100.86/zabbix/api_jsonrpc.php` |
@@ -75,6 +75,15 @@ sudo systemctl restart grafana-server
 ```
 
 Depois, na interface: **Administration → Plugins and data → Plugins → Zabbix → Enable**. Instalar e habilitar são etapas separadas no Grafana.
+
+Versão em uso, conferida no servidor:
+
+```bash
+sudo grafana cli --homepath /usr/share/grafana plugins ls | grep zabbix
+# alexanderzobnin-zabbix-app @ 6.3.1
+```
+
+A instalação inicial foi a 6.9.1; a versão foi trocada durante o diagnóstico da Etapa 5 e ficou em 6.3.1.
 
 ## Etapa 4 — Usuário dedicado no Zabbix
 
@@ -220,7 +229,7 @@ E a trigger `Apache está inativo` passou de `OK` para **`PROBLEM`**:
 | # | Problema | Causa | Solução |
 | :-: | :--- | :--- | :--- |
 | 1 | `grafana-cli plugins install ...` falhou ao instalar o plugin, com aviso de descontinuação | A CLI nova não encontrava os padrões de configuração do pacote e o `grafana-cli` com hífen está obsoleto | Usar `grafana cli` e passar `--homepath /usr/share/grafana` **antes** do subcomando `plugins install` |
-| 2 | **Save & test** da fonte de dados falhava com `Not found`, `Could not connect to given url`, `Not authorized` e ficava preso em `Testing...` (3 min até `context canceled` no log) | A API do Zabbix respondia (`curl` devolveu `8.0.0`), mas o Apache não repassava o cabeçalho `Authorization: Bearer` ao PHP-FPM (`getallheaders Authorization` aparecia como ausente no teste). Pistas que atrasaram o diagnóstico: `404` em `/api/datasources/.../resources/zabbix-api`, requisições à versão `4.5.5` do plugin (cache do navegador) e relatos de falha em versões do plugin acima da 6.3.0 (issue 2545); o plugin foi trocado de 6.9.1 para 6.3.0 e depois 6.3.1 durante os testes | Substituir o `zabbix-auth.conf` por `SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1`, habilitar com `a2enconf zabbix-auth` e recarregar o Apache (Etapa 5). Depois disso, `Save & test` aprovado: `Zabbix API version 8.0.0` |
+| 2 | **Save & test** da fonte de dados falhava com `Not found`, `Could not connect to given url`, `Not authorized` e ficava preso em `Testing...` (3 min até `context canceled` no log) | A API do Zabbix respondia (`curl` devolveu `8.0.0`), mas o Apache não repassava o cabeçalho `Authorization: Bearer` ao PHP-FPM (`getallheaders Authorization` aparecia como ausente no teste). Pistas que atrasaram o diagnóstico: `404` em `/api/datasources/.../resources/zabbix-api`, requisições à versão `4.5.5` do plugin (cache do navegador) e relatos de falha em versões do plugin acima da 6.3.0 (issue 2545); o plugin foi trocado de 6.9.1 para 6.3.0 e depois 6.3.1 durante os testes, e ficou na 6.3.1 | Substituir o `zabbix-auth.conf` por `SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1`, habilitar com `a2enconf zabbix-auth` e recarregar o Apache (Etapa 5). Depois disso, `Save & test` aprovado: `Zabbix API version 8.0.0` |
 | 3 | Grafana em `Testing...` por minutos e a VM congelando durante a configuração da fonte de dados | Instabilidade da VM (soft lockups), registrada no README | Aguardar a VM voltar a responder e repetir o teste; a falha de plugin do item 2 foi investigada em separado |
 | 4 | O item `Zabbix agent availability` não aparece na lista de itens do host | O template `Linux by Zabbix agent active` não cria esse item para o host com checks ativos | Usar o item `System uptime` num painel Stat, com duração em segundos |
 | 5 | VM sem resposta durante o `stress-ng --cpu 4 --timeout 120s` | Saturação das 4 vCPUs, compartilhadas com Zabbix, Grafana, Apache e MariaDB | Aguardar a recuperação; o teste foi concluído e a lição ficou registrada na Etapa 8 |
